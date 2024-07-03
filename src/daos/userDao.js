@@ -7,7 +7,7 @@ class UserDao{
         return await user.save(session && { session: session })
     };
     
-    async getUserByEmail(email){ return await userModel.findOne({email: email}) };
+    async getUserByEmail(email){ return await userModel.findOne({email: email}).lean() };
 
     async getUserById(id){ return await userModel.findById(id).lean().populate('cart') };
 }

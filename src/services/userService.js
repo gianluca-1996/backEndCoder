@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const userDao = require('../daos/userDao.js');
 const UserDto = require('../dtos/userDto.js');
 const cartService = require('../services/cartService.js');
@@ -29,7 +30,7 @@ class UserService{
             if(!user) throw new Error("Error al crear el usuario");
             //Confirma la transacción
             await session.commitTransaction();
-            
+        
             return new UserDto(user);
         } catch (error) {
             // Si hay algún error, se hace rollback de la transacción
@@ -39,6 +40,24 @@ class UserService{
             // Finaliza la sesión
             session.endSession();
         }
+    }
+
+    async getUserById(id){
+        const user = await userDao.getUserById(id);
+        if(!user) throw new Error("El id ingresado no corresponde a un usuario registrado");
+        return new UserDto(user);
+    }
+
+    async login(email, password){
+        const user = await userDao.getUserByEmail(email);
+        if(!user){ throw new Error("Email no encontrado") };
+
+        const matchPassword = await bcrypt.compare(password, user.password);
+        if(!matchPassword) throw new Error("Contraseña incorrecta");
+
+        //crea token
+        const token = jwt.sign(user, process.env.JWT_SECRET, {expiresIn: '10m'});
+        return token;
     }
 }
 
