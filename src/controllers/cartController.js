@@ -33,7 +33,7 @@ class CartController{
             const cart = await cartService.addProduct(req.params.cid, req.params.pid);
             res.json( {result:'success', payload: cart} );
         } catch (error) {
-            res.status(500).json( {result: 'error', error: error.message} );
+            res.json( {result: 'error', error: error.message} );
         }
     }
 
@@ -48,8 +48,8 @@ class CartController{
 
     async deleteProduct(req, res){
         try {
-            const updatedCart = await cartService.deleteProduct(req.params.cid, req.params.pid);
-            res.json( {result:'success', payload: updatedCart} );
+            await cartService.deleteProduct(req.params.cid, req.params.pid);
+            res.json({result:'success'});
         } catch (error) {
             res.status(500).json( {result: 'error', error: error.message} );
         }

@@ -1,0 +1,16 @@
+#imgProduct{
+    height: 40%;
+}
+
+.card{
+    height: 90%;
+    margin: 2%;
+}
+
+#nav{
+    background-color: cornflowerblue;
+}
+
+.titlePag{
+    color: cornflowerblue;
+}

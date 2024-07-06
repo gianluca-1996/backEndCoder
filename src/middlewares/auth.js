@@ -5,7 +5,7 @@ const passportCall = strategy => {
     return async (req, res, next) => {
         passport.authenticate(strategy, (err, user, info) => {
             if(err) return next(err);
-            if(!user) return res.status(401).send({error: info.messages ? info.messages : info.toString()});//res.redirect('/views/login');
+            if(!user) return res.redirect('/views/login');//if(!user) return res.status(401).send({error: info.messages ? info.messages : info.toString()});
             req.user = user;
             next();
         })(req, res, next)
@@ -25,7 +25,7 @@ const isNotAuthenticated = (req, res, next) => {
     if(tokenCookie){        
         try {
             jwt.verify(tokenCookie, process.env.JWT_SECRET);
-            res.json( {result: success} );//res.redirect('/views/products');
+            res.redirect('/views/products');
         } catch (error) {
             return next();
         }

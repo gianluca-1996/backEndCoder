@@ -1,0 +1,128 @@
+<div class="container text-center">
+    <div class="row">
+        {{#if isAdmin}}
+            <p>Bienvenido <strong>Administrador!</strong></p>
+        {{else}}
+            <p>Bienvenido <strong>Usuario!</strong></p>
+        {{/if}}
+        <p>firstName: <strong>{{user.firstName}}</strong></p>
+        <p>lastName: <strong>{{user.lastName}}</strong></p>
+        <p>age: <strong>{{user.age}}</strong></p>
+        <p>email: <strong>{{user.email}}</strong></p>
+    </div>
+    {{#if products}}
+        <h2 class="titlePag">Lista de productos</h2>
+        <div class="row">
+            <p class="d-inline-flex gap-1">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Filtros
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">                
+                <form action="/views/products" method="get" class="row bg-body-secondary">
+                    <div class="col-1">
+                        <label for="categoria"><strong>Categoría:</strong></label>
+                    </div>
+                    <div class="col-2">
+                        <select class="form-select" name="query" id="query" aria-label="Default select example">
+                            <option value="">Todas</option>
+                            <option value="pizza" {{#if filtros.pizza}}selected{{/if}}>Pizza</option>
+                            <option value="empanada" {{#if filtros.empanada}}selected{{/if}}>Empanada</option>
+                        </select>
+                    </div>
+                    <div class="col-1">
+                        <label for="stock"><strong>Stock:</strong></label>
+                    </div>
+                    <div class="col-2">
+                        <select class="form-select" name="stock" id="stock" aria-label="Default select example">
+                            <option value="">No aplica</option>
+                            <option value="aplica" {{#if filtros.aplicaStock}}selected{{/if}}>con stock</option>
+                            <option value="noAplica" {{#if filtros.noAplicaStock}}selected{{/if}}>sin stock</option>
+                        </select>
+                    </div>   
+                    <div class="col-2">
+                        <label for="limit"><strong>Limit:</strong></label>
+                        <input type="number" name="limit" id="limit" value="{{filtros.limit}}" max="10" min="1">
+                    </div>
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-3"><p><strong>Sort:</strong></p></div>
+                            <div class="form-check col-3">
+                                <input class="form-check-input" type="radio" name="sort" id="asc" value="asc" {{#if filtros.asc}}checked{{/if}}>
+                                <label class="form-check-label" for="asc">
+                                    ASC
+                                </label>
+                            </div>
+                            <div class="form-check col-1">
+                                <input class="form-check-input" type="radio" name="sort" id="desc" value="desc" {{#if filtros.desc}}checked{{/if}}>
+                                <label class="form-check-label" for="desc">
+                                    DESC
+                                </label>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-success" >Aplicar</button>
+                    </div>
+                </form>
+                <div class="row bg-body-secondary">
+                    <form action="/views/products" method="get">
+                        <button type="submit" class="btn btn-warning" >Borrar filtros</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {{#each products}}
+                <div class="col-4">
+                    <div class="card">
+                        {{#each thumbnail}}
+                            <img src="/Img/{{this}}" class="card-img-top" alt="product" id="imgProduct">
+                        {{/each}}
+                        <div class="card-body row">
+                            <h5 class="card-title">{{title}}</h5>
+                            <p class="card-text">
+                                <p>{{user.cart}}</p>
+                                <p><strong>{{description}}</strong></p>
+                                <p><strong>Stock: </strong>{{stock}}</p>
+                                <p><strong>Price: ${{price}}</strong></p>
+                            </p>
+                            <form class="item-form" data-id="{{this._id}}" data-cart="{{../user.cart}}">
+                                <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="row">
+            <ul class="pagination justify-content-center">
+                {{#if hasPrevPage}}
+                    <li class="page-item">
+                        <a class="page-link" href="{{prevLink}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="{{prevLink}}">{{prevPage}}</a></li>
+                {{/if}}
+                <li class="page-item"><a class="page-link" href="#">{{page}}</a></li>
+                {{#if hasNextPage}}
+                    <li class="page-item"><a class="page-link" href="{{nextLink}}">{{nextPage}}</a></li>
+                    <li class="page-item">
+                    <a class="page-link" href="{{nextLink}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    {{else}}
+        <h2>No hay productos</h2>
+        <div class="row bg-body-secondary">
+            <form action="/views/products" method="get">
+                <button type="submit" class="btn btn-warning" >Volver</button>
+            </form>
+        </div>
+    {{/if}}
+</div>
+<script src="/js/cart.js"></script>

@@ -7,6 +7,7 @@ const initializePassportJwt = require('./config/passport.config.js');
 const productRouter = require('./routes/productRouter.js');
 const cartsRouter = require('./routes/cartRouter.js');
 const userRouter = require('./routes/userRouter.js');
+const viewsRouter = require('./routes/viewsRouter.js');
 const app = express();
 const PORT = 8080;
 const cookieParser = require('cookie-parser');
@@ -22,7 +23,7 @@ app.use('/api/products', productRouter);
 app.use('/test', (req, res) => res.json( {result: 'success'} ));
 app.use('/api/carts', cartsRouter);
 app.use('/api/user', userRouter);
-/*app.use('/api/session', sessionRouter);
 app.use('/views', viewsRouter);
-*/
+//app.use('/api/session', sessionRouter);
+
 app.use(express.static(__dirname + '/public'));

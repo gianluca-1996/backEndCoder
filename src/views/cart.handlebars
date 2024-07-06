@@ -1,0 +1,46 @@
+<div class="container text-center">
+    {{#if lenght}}
+        <h2>Productos en carrito</h2>
+        <div class="row">        
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">title</th>
+                            <th scope="col">description</th>
+                            <th scope="col">price</th>
+                            <th scope="col">quantity</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                            <tr style="text-align: left;">
+                                <td>{{pid.title}}</td>
+                                <td>{{pid.description}}</td>
+                                <td>${{pid.price}}</td>
+                                <td>{{quantity}}</td>
+                                <td>
+                                    <form class="item-form-delete" data-cart="{{../user.cart}}" data-pid="{{pid._id}}">
+                                        <button class="btn btn-danger" type="submit">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-success">Confirmar</button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-warning">Vaciar Carrito</button>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <h3>No hay productos en este carrito</h3>
+    {{/if}}
+</div>
+<script src="/js/cart.js"></script>

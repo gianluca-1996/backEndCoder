@@ -29,7 +29,7 @@ class CartDao{
         );
     };
 
-    async deleteProduct(cid, pid){ return await cartModel.findOneAndUpdate( { _id: cid }, { $pull: { products: {pid: pid} } } ) };
+    async deleteProduct(cid, pid){ await cartModel.updateOne( { _id: cid }, { $pull: { products: {pid: pid} } } ) };
 
     async deleteAllProducts(cid){ return await cartModel.findOneAndUpdate( { _id: cid }, { $set: { products: [] } } ) };
 }

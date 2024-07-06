@@ -110,9 +110,12 @@ class CartService{
 
     //ELIMINA TODAS LAS UNIDADES DEL PRODUCTO EN EL CARRITO
     async deleteProduct(cid, pid){
-        const cartUpdated = await cartDao.deleteProduct(cid, pid);
-        if(!cartUpdated) throw new Error("El carrito no existe");
-        return new CartDto(cartUpdated);
+        const cart = await cartDao.getCartById(cid);
+        if(!cart) throw new Error("El carrito no existe para este usuario");
+        const product = await productService.getProductById(pid);
+        const quantity = cart.products.find(prod => prod.pid._id == pid).quantity;
+        await cartDao.deleteProduct(cid, pid);
+        await productService.updateProduct(pid, {campo: "stock", valor: product.stock + quantity});
     }
 
     //ELIMINA TODOS LOS PRODUCTOS DEL CARRITO
