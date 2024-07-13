@@ -1,6 +1,5 @@
 const productsService = require('../services/productService.js');
 const cartService = require('../services/cartService.js');
-const ticketService = require('../services/ticketService.js');
 
 class ViewsController{
 
@@ -16,7 +15,7 @@ class ViewsController{
                 isAdmin: req.user.role == 'admin' ? true : false, //variable usada en main handlebars
                 user: req.user,
                 isLogUser: true,
-                products: data.docs, 
+                products: data.docs,
                 filtros:{
                     limit: limit,
                     pizza: query === 'pizza' ? true : false,

@@ -1,9 +1,19 @@
 const express = require('express');
-const router = express();
 const handlebars = require("express-handlebars");
-router.engine("handlebars", handlebars.engine());
+const handlebarsHelpers = require('handlebars-helpers');
+const router = express();
+
+// Configuracion el motor de plantillas Handlebars
+const hbs = handlebars.create({
+    extname: '.handlebars',
+    defaultLayout: 'main',
+    helpers: handlebarsHelpers() // Registrar los helpers
+});
+
+router.engine('handlebars', hbs.engine);
 router.set("views", __dirname + "/../views");
-router.set("view engine", "handlebars");
+router.set('view engine', 'handlebars');
+
 const {isNotAuthenticated, passportCall, authorization} = require('../middlewares/auth.js');
 const viewsController = require('../controllers/viewsController.js');
 

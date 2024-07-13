@@ -84,11 +84,11 @@
                             <p class="card-text">
                                 <p>{{user.cart}}</p>
                                 <p><strong>{{description}}</strong></p>
-                                <p><strong>Stock: </strong>{{stock}}</p>
+                                <p style="color: {{#eq stock 0}}red{{else}}green{{/eq}};"><strong>Stock: </strong>{{stock}}</p>
                                 <p><strong>Price: ${{price}}</strong></p>
                             </p>
                             <form class="item-form" data-id="{{this._id}}" data-cart="{{../user.cart}}">
-                                <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+                                <button class="btn btn-primary" type="submit" {{#eq stock 0}}disabled{{/eq}}>Agregar al carrito</button>
                             </form>
                         </div>
                     </div>
