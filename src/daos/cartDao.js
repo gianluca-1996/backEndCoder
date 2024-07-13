@@ -4,7 +4,7 @@ class CartDao{
 
     async addCart(session){ 
         const cart = new cartModel({});
-        return await cart.save(session && { session: session });
+        return await cart.save({ session: session });
     };
 
     async getCarts(){ return await cartModel.find() };
@@ -31,7 +31,7 @@ class CartDao{
 
     async deleteProduct(cid, pid){ await cartModel.updateOne( { _id: cid }, { $pull: { products: {pid: pid} } } ) };
 
-    async deleteAllProducts(cid){ return await cartModel.findOneAndUpdate( { _id: cid }, { $set: { products: [] } } ) };
+    async deleteAllProducts(cid, session){ return await cartModel.findOneAndUpdate( { _id: cid }, { $set: { products: [] } }, { session } ) };
 }
 
 module.exports = new CartDao();

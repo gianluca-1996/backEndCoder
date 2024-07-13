@@ -11,5 +11,6 @@ router.get('/login', isNotAuthenticated, viewsController.login);
 router.get('/register', isNotAuthenticated, viewsController.register);
 router.get('/products', passportCall('jwt'), viewsController.products);
 router.get('/cart/:cid', passportCall('jwt'), viewsController.cart);
+router.get('/successPurchase', passportCall('jwt'), viewsController.successPurchase);
 
 module.exports = router;

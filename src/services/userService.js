@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const userDao = require('../daos/userDao.js');
 const UserDto = require('../dtos/userDto.js');
-const cartService = require('../services/cartService.js');
 const bcrypt = require('bcrypt');
 
 class UserService{
@@ -24,6 +23,8 @@ class UserService{
         //inicia la transaccion
         session.startTransaction();
         try {
+            //esta dependencia se importa aca para no obtener error (cartService y userService se importan mutuamente)
+            const cartService = require('../services/cartService.js');
             const newCart = await cartService.addCart(session);
             newUser.cart = newCart._id;
             const user = await userDao.createUser(newUser, session);
@@ -58,6 +59,12 @@ class UserService{
         //crea token
         const token = jwt.sign(user, process.env.JWT_SECRET, {expiresIn: '10m'});
         return token;
+    }
+
+    async getUserByCartId(cid){
+        const user = await userDao.getUserByCartId(cid);
+        if(!user) throw new Error("El cid ingresado no corresponde a un usuario registrado");
+        return new UserDto(user);
     }
 }
 

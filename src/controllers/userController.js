@@ -1,3 +1,4 @@
+const cartService = require('../services/cartService.js');
 const userService = require('../services/userService.js');
 
 class UserController{
@@ -22,7 +23,7 @@ class UserController{
     async login(req, res){
         try {
             const token = await userService.login(req.body.email, req.body.password);
-            res.cookie(process.env.COOKIE_SECRET, token, {maxAge: 60 * 60 * 3000, httpOnly: true} )
+            res.cookie(process.env.COOKIE_SECRET, token, {maxAge: 60 * 60 * 10000, httpOnly: true} )
             .redirect('/views/products');
         } catch (error) {
             res.status(400).json( {result: 'error', error: error.message} );
@@ -30,7 +31,13 @@ class UserController{
     }
 
     async logout(req, res){
-        res.cookie('coderCookieToken', '', { expires: new Date(0), httpOnly: true }).redirect('/views/login');
+        try {
+            //ANTES DE CERRAR LA SESION, LIMPIO EL CARRITO DEL USUARIO DE SER NECESARIO
+            await cartService.cleanCart(req.user.cart);
+            res.cookie('coderCookieToken', '', { expires: new Date(0), httpOnly: true }).redirect('/views/login');
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
     }
 }
 

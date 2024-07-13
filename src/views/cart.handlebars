@@ -31,12 +31,12 @@
                 </table>
             </div>
             <div class="row">
-                <div class="col">
-                    <button class="btn btn-success">Confirmar</button>
-                </div>
-                <div class="col">
-                    <button class="btn btn-warning">Vaciar Carrito</button>
-                </div>
+                <form class="col" method="post" action="/api/carts/purchase">
+                    <button class="btn btn-success" type="submit">Confirmar compra</button>
+                </form>
+                <form class="col" method="post" action="/api/carts/cleanCart">
+                    <button class="btn btn-warning" type="submit">Vaciar Carrito</button>
+                </form>
             </div>
         </div>
     {{else}}

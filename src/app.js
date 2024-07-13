@@ -11,7 +11,6 @@ const viewsRouter = require('./routes/viewsRouter.js');
 const app = express();
 const PORT = 8080;
 const cookieParser = require('cookie-parser');
-app.listen(PORT, () => console.log(`Servidor escuchando en el puerto: ${PORT}`));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -24,6 +23,6 @@ app.use('/test', (req, res) => res.json( {result: 'success'} ));
 app.use('/api/carts', cartsRouter);
 app.use('/api/user', userRouter);
 app.use('/views', viewsRouter);
-//app.use('/api/session', sessionRouter);
-
 app.use(express.static(__dirname + '/public'));
+
+app.listen(PORT, () => console.log(`Servidor escuchando en el puerto: ${PORT}`));

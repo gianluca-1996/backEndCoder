@@ -1,5 +1,6 @@
 const productsService = require('../services/productService.js');
 const cartService = require('../services/cartService.js');
+const ticketService = require('../services/ticketService.js');
 
 class ViewsController{
 
@@ -37,11 +38,20 @@ class ViewsController{
             res.send({result: "Error: " + error.message});
         }
     }
+
     async cart(req, res){
         try {
             const cart = await cartService.getCartById(req.params.cid);
             const products = cart.products;
             res.render('cart', {user: req.user, products: products, lenght: products.length > 0 ? true : false, isLogUser: true});
+        } catch (error) {
+            res.send({result: "Error: " + error.message});
+        }
+    }
+
+    async successPurchase(req, res){
+        try {
+            res.render('successPurchase');
         } catch (error) {
             res.send({result: "Error: " + error.message});
         }

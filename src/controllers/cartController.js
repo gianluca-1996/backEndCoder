@@ -30,7 +30,7 @@ class CartController{
 
     async addProduct(req, res){
         try {
-            const cart = await cartService.addProduct(req.params.cid, req.params.pid);
+            const cart = await cartService.addProduct(req.params.cid, req.params.pid, req.user._id);
             res.json( {result:'success', payload: cart} );
         } catch (error) {
             res.json( {result: 'error', error: error.message} );
@@ -55,12 +55,21 @@ class CartController{
         }
     }
 
-    async deleteAllProducts(req, res){
+    async saveTicket(req, res){
         try {
-            const cartUpdated = await cartService.deleteAllProducts(req.params.cid);
-            res.json( {result:'success', payload: cartUpdated} );
+            await cartService.saveTicket(req.user.cart);
+            res.redirect('/views/successPurchase');
         } catch (error) {
-            res.status(500).json( {result: 'error', error: error.message} );
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
+
+    async cleanCart(req, res){
+        try {
+            await cartService.cleanCart(req.user.cart);
+            res.redirect('/views/products');
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
         }
     }
 }
