@@ -59,4 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
     })
+
+    const intervalId = setInterval(async () => {
+        alert("ATENCIÓN!. Queda 1 minuto para el cierre de su compra")
+    }, 300000); //5min
+
+    //Detiene el vaciado automatico del carrito una vez que el tiempo de sesion ha expirado (10 min max de sesion)
+    setTimeout(() => {
+        clearInterval(intervalId);
+    }, 600000);
 })

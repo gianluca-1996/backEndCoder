@@ -211,7 +211,7 @@ class CartService{
         } catch (error) {
             // Si hay algún error, se hace rollback de la transacción
             await session.abortTransaction();
-            throw new Error('Fallo cleanCart');
+            throw new Error(error.message);
         }finally {
             // Finaliza la sesión
             session.endSession();

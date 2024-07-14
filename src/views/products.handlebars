@@ -11,6 +11,7 @@
         <p>email: <strong>{{user.email}}</strong></p>
     </div>
     {{#if products}}
+        <h3 style="color: red;">Usted tiene 5 minutos para realizar su compra</h3>
         <h2 class="titlePag">Lista de productos</h2>
         <div class="row">
             <p class="d-inline-flex gap-1">
@@ -117,7 +118,7 @@
             </ul>
         </div>
     {{else}}
-        <h2>No hay productos</h2>
+        <h2>No hay productos por el momento</h2>
         <div class="row bg-body-secondary">
             <form action="/views/products" method="get">
                 <button type="submit" class="btn btn-warning" >Volver</button>
