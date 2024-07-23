@@ -1,5 +1,6 @@
 const passport = require('passport');
 const jwt = require('passport-jwt');
+const userService = require('../services/userService.js');
 
 //estrategia passport-jwt
 const JWTStrategy = jwt.Strategy; //core de la estrategia jwt
@@ -24,5 +25,14 @@ const cookieExtractor = req => {
 
     return token;
 }
+
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    const user = await userService.getUserById(id);
+    done(null, user);
+})
 
 module.exports = initializePassportJwt;

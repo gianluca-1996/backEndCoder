@@ -32,7 +32,7 @@ class ProductService{
         const pagesDocs = (isNaN(page) || !page) ? 1 : parseInt(page);
         let sortDocs = {};
         let stockObj = {};
-        let category = {};
+        let category = query ? {category: query} : {};
 
         switch(sort){
             case 'asc':{
@@ -58,18 +58,6 @@ class ProductService{
             }
         };
 
-        switch(query){
-            case 'pizza':{
-                category = {category: 'pizza'};
-                break;
-            }
-
-            case 'empanada':{
-                category = {category: 'empanada'};
-                break;
-            }
-        };
-
         const options = {
             limit: quantityDocs,
             page: pagesDocs,
@@ -79,7 +67,7 @@ class ProductService{
         return await productDao.getProductsByFilters(category, options, stockObj);
     };
 
-    async updateProduct(id, body, session){
+    async updateProduct(id, body){
         const {campo, valor, obj} = body;
 
         if(campo && valor === undefined)
@@ -129,7 +117,7 @@ class ProductService{
             }
         }
 
-        const response = await productDao.updateProduct(id, filtro, session);
+        const response = await productDao.updateProduct(id, filtro);
         if(response.modifiedCount === 0) throw new Error("El producto a actualizar no existe");
         return;
     }

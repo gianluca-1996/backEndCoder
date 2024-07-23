@@ -161,7 +161,7 @@ class CartService{
             });
             await transport.sendMail({
                 from: `Gian Ecommerce ${process.env.EMAIL}`,
-                to: 'gianluca.cambareri@outlook.com',
+                to: user.email,
                 subject: 'TICKET DE COMPRA',
                 html: 
                     `<div> <h1>Hola, tu compra se ha realizado con éxito!</h1>
@@ -196,6 +196,8 @@ class CartService{
             const cart = await cartDao.getCartById(cid);
             const products = cart.products;
             if(products.length == 0){
+                // Finaliza la sesión
+                session.endSession();
                 return;
             }
 
@@ -203,15 +205,16 @@ class CartService{
             session.startTransaction();
 
             products.forEach(async (product) => {
-                await productService.updateProduct(product.pid._id, {campo: "stock", valor: product.pid.stock + product.quantity}, session);
+                await productService.updateProduct(product.pid._id, {campo: "stock", valor: product.pid.stock + product.quantity});
             });
+            
             await cartDao.deleteAllProducts(cid, session);
             //Confirma la transacción
             await session.commitTransaction();
         } catch (error) {
             // Si hay algún error, se hace rollback de la transacción
             await session.abortTransaction();
-            throw new Error(error.message);
+            //throw new Error(error.message);
         }finally {
             // Finaliza la sesión
             session.endSession();

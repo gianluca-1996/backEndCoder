@@ -20,7 +20,7 @@ class ProductDao{
 
     async getProductsByFilters(category, options, stock ){ return await productModel.paginate( {$and: [category, stock]}, options ) };
 
-    async updateProduct(id, filtro, session){ return await productModel.updateOne({_id: id}, filtro, { session })};
+    async updateProduct(id, filtro, session){ return await productModel.findOneAndUpdate({_id: id}, filtro)};
 
     async deleteProduct(id){ return await productModel.deleteOne({_id: id}) };
 }
