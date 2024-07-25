@@ -3,10 +3,23 @@ const jwt = require('jsonwebtoken');
 const userDao = require('../daos/userDao.js');
 const UserDto = require('../dtos/userDto.js');
 const bcrypt = require('bcrypt');
+const CustomError = require('./errors/customError.js');
+const EErrors = require('./errors/enum.js');
+const generateUserErrorInfo = require('./errors/info.js');
 
 class UserService{
     async createUser(body){
         const {firstName, lastName, email, age, role, password} = body;
+
+        if(!firstName || !lastName || !email || !age || !role || !password){
+            CustomError.createError({                
+                name: "Error al crear el usuario", 
+                cause: generateUserErrorInfo({firstName, lastName, email, age, role, password}),
+                message: "Error durante la creacion del usuario",
+                code: EErrors.INVALID_TYPES_ERROR
+            })
+        }
+
         if(await userDao.getUserByEmail(email)) throw new Error("Ya existe un usuario con el email ingresado");
 
         const passEncrypted = await bcrypt.hash(password, 2);

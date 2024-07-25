@@ -47,7 +47,13 @@ class UserController{
             const user = await userService.createUser(req.body);
             res.status(201).json( {result: "success", payload: user} );
         } catch (error) {
-            res.status(400).json( {result: 'error', error: error.message} );
+            res.status(400).json( {
+                result: 'error', error: {
+                    name: error.name,
+                    cause: error.cause,
+                    message: error.message,
+                    code: error.code
+                }} );
         }
     }
 
