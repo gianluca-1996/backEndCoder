@@ -54,6 +54,15 @@ class ProductController{
             res.status(400).json( {result: 'error', error: error.message} );
         }
     }
+
+    mockingProducts(req, res){
+        try {
+            const products = productService.mockingProducts();
+            res.json({result: "success", payload: products});
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
 }
 
 module.exports = new ProductController();

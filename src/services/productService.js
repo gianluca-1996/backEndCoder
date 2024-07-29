@@ -1,5 +1,6 @@
 const productDao = require('../daos/productDao.js');
 const ProductDto = require('../dtos/productDto.js');
+const {generateProducts} = require('../utils.js');
 
 class ProductService{
     async addProduct(body, file){
@@ -127,6 +128,16 @@ class ProductService{
         if(deletedProduct.deletedCount != 1) throw new Error("El producto a eliminar no existe");
         return;
     };
+
+    mockingProducts(){
+        let products = [];
+
+        for(let i = 0; i < 100; i++){
+            products.push(generateProducts());
+        }
+
+        return products;
+    }
 }
 
 module.exports = new ProductService();
