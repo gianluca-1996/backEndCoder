@@ -1,5 +1,7 @@
 const multer = require('multer');
 const { faker } = require('@faker-js/faker');
+const winston = require('winston');
+const program = require('./config/programArgs.config.js');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -25,4 +27,49 @@ const generateProducts = () => {
     }
 }
 
-module.exports = {uploader, generateProducts};
+const customLevelOptions = {
+    levels:{
+        fatal: 0,
+        warning: 2,
+        info: 3,
+        http: 4,
+        debug: 5
+    },
+    colors:{
+        fatal: 'red',
+        warning: 'yellow',
+        info: 'blue',
+        http: 'green',
+        debug: 'white'
+    }
+}
+
+const logger = winston.createLogger({
+    levels: customLevelOptions.levels,
+    transports: [
+        program.args[0] === 'prod' ?
+        new winston.transports.Console({
+            level: 'info',
+            format: winston.format.combine(
+                winston.format.colorize({colors: customLevelOptions.colors}),
+                winston.format.simple()
+            )
+        })
+     :
+        new winston.transports.Console({
+            level: 'debug',
+            format: winston.format.combine(
+                winston.format.colorize({colors: customLevelOptions.colors}),
+                winston.format.simple()
+            )
+        }),
+        new winston.transports.File({
+            filename: __dirname + '/logErrors/errores.log',
+            level: 'fatal'
+        })
+    ]
+    
+})
+
+
+module.exports = {uploader, generateProducts, logger};
