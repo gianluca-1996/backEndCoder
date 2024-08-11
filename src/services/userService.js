@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userDao = require('../daos/userDao.js');
 const UserDto = require('../dtos/userDto.js');
 const bcrypt = require('bcrypt');
+const transport = require('../config/mailer.config.js');
 const CustomError = require('./errors/customError.js');
 const EErrors = require('./errors/enum.js');
 const generateUserErrorInfo = require('./errors/info.js');
@@ -78,6 +79,29 @@ class UserService{
         const user = await userDao.getUserByCartId(cid);
         if(!user) throw new Error("El cid ingresado no corresponde a un usuario registrado");
         return new UserDto(user);
+    }
+
+    async updatePassword(id, password){
+        const user = await userDao.getUserById(id);
+        const passEncrypted = await bcrypt.hash(password, 2);
+        const updatePassUserOk = await userDao.updatePassword(user.email, passEncrypted);
+        if(!updatePassUserOk.acknowledged) throw new Error("No se ha podido acualizar la contraseña");
+    }
+
+    async sendEmailChangePassword(email){
+        const user = await userDao.getUserByEmail(email);
+        const url = `http://localhost:8080/views/changePassword/${user._id}`;
+        await transport.sendMail({
+            from: `Gian Ecommerce ${process.env.EMAIL}`,
+            to: email,
+            subject: 'CAMBIO DE CONTRASEÑA',
+            html: 
+                `<div> 
+                    <h1>Hola, con el siguiente enlace podrás cambiar tu contraseña</h1>
+                    <a href="${url}" style="display: inline-block; margin: 20px 0; padding: 10px 20px; background-color: #4CAF50; color: #fff; text-decoration: none; border-radius: 5px;">Restablecer Contraseña</a>
+                </div>`,
+            attachments: []
+        });
     }
 }
 

@@ -12,6 +12,8 @@ class UserDao{
     async getUserById(id){ return await userModel.findById(id).lean().populate('cart') };
 
     async getUserByCartId(cid){ return await userModel.findOne({cart: cid}).lean() };
+
+    async updatePassword(email, password){ return await userModel.updateOne({ email: email }, {password: password}) };
 }
 
 module.exports = new UserDao();

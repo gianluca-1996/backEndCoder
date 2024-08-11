@@ -55,6 +55,30 @@ class ViewsController{
             res.send({result: "Error: " + error.message});
         }
     }
+
+    async sendEmailChangePassword(req, res){
+        try {
+            res.render('sendEmailChangePassword');
+        } catch (error) {
+            res.send({result: "Error: " + error.message});
+        }
+    }
+
+    async changePassword(req, res){
+        try {
+            res.render('changePassword', {id: req.params.id});
+        } catch (error) {
+            res.send({result: "Error: " + error.message});
+        }
+    }
+
+    async sentEmail(req, res){
+        try {
+            res.render('sentEmail');
+        } catch (error) {
+            res.send({result: "Error: " + error.message});
+        }
+    }
 }
 
 module.exports = new ViewsController();

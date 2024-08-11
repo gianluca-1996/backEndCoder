@@ -65,6 +65,24 @@ class UserController{
             res.status(400).json( {result: 'error', error: error.message} );
         }
     }
+
+    async updatePassword(req, res){
+        try {
+            await userService.updatePassword(req.params.id, req.body.password);
+            res.redirect('/views/login');
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
+
+    async sendEmailChangePassword(req, res){
+        try {
+            await userService.sendEmailChangePassword(req.body.email);
+            res.redirect('/views/sentEmail');
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
 }
 
 module.exports = new UserController();

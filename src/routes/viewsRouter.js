@@ -22,5 +22,8 @@ router.get('/register', isNotAuthenticated, viewsController.register);
 router.get('/products', passportCall('jwt'), viewsController.products);
 router.get('/cart/:cid', passportCall('jwt'), viewsController.cart);
 router.get('/successPurchase', passportCall('jwt'), viewsController.successPurchase);
+router.get('/sendEmailChangePassword', viewsController.sendEmailChangePassword);
+router.get('/changePassword/:id', viewsController.changePassword);
+router.get('/sentEmail', viewsController.sentEmail);
 
 module.exports = router;
