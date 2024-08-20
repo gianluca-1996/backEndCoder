@@ -1,0 +1,57 @@
+paths:
+  /api/user/{id}:
+    get:
+      summary: Obtiene un usuario segun su id
+      tags: 
+        - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Id del usuario que desea buscar
+        schema:
+          $type: String
+      responses:
+        '200':
+          description: El usuario ha sido encontrado y devuelto de manera exitosa.
+        '400':
+          description: El usuario no ha sido encontrado
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por Mongo
+        firstName:
+          type: String
+          description: Nombre del usuario
+        lastName:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Email del usuario. Este campo es unico
+        age: 
+          type: Number
+          description: Edad del usuario
+        password:
+          type: String
+          description: Contraseña del usuario
+        role:
+          type: String
+          description: Rol del usuario (admin, o user)
+        cart:
+          type: ObjectId
+          description: Id del carrito asignado al usuario
+      example:
+        _id: OjectId('66720eec58e93070c8d847b1')
+        firstName: 'adminCoder'
+        lastName: 'house'
+        email: 'adminCoder@coder.com'
+        age: 18
+        password: '$2b$04$i4CNNhmUxrWWZLBPyVYv2Od5pWVoUwEek3MiRO6Dl2kQ6fbBtVkoO'
+        role: 'admin'
+        cart: {_id: OjectId('66720eec58e93070c8d847af'), products: []}
