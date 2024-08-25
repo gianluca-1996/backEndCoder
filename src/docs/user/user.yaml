@@ -16,6 +16,24 @@ paths:
           description: El usuario ha sido encontrado y devuelto de manera exitosa.
         '400':
           description: El usuario no ha sido encontrado
+  
+  /api/user/register:
+    post:
+      summary: Registra un nuevo usuario en la aplicacion
+      tags: 
+        - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Id del usuario que desea buscar
+        schema:
+          $type: String
+      responses:
+        '200':
+          description: El usuario ha sido encontrado y devuelto de manera exitosa.
+        '400':
+          description: El usuario no ha sido encontrado
 
 components:
   schemas:
@@ -55,3 +73,33 @@ components:
         password: '$2b$04$i4CNNhmUxrWWZLBPyVYv2Od5pWVoUwEek3MiRO6Dl2kQ6fbBtVkoO'
         role: 'admin'
         cart: {_id: OjectId('66720eec58e93070c8d847af'), products: []}
+  
+  requestBodies:
+    register:
+      type: object
+      properties:
+        firstName:
+          type: String
+          description: Nombre del ususario
+        lastName:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Email del usuario. Este campo es unico
+        age: 
+          type: Number
+          description: Edad del usuario
+        password:
+          type: String
+          description: Contraseña del usuario
+        role:
+          type: String
+          description: Rol del usuario (admin, o user)
+      example:
+        firstName: 'adminCoder'
+        lastName: 'house'
+        email: 'adminCoder@coder.com'
+        age: 18
+        password: '$2b$04$i4CNNhmUxrWWZLBPyVYv2Od5pWVoUwEek3MiRO6Dl2kQ6fbBtVkoO'
+        role: 'admin'
