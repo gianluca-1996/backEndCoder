@@ -18,8 +18,8 @@ const addLogger = require('./middlewares/logger.js');
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
-initializePassportJwt();
-app.use(passport.initialize());
+//initializePassportJwt();
+//app.use(passport.initialize());
 app.use(addLogger);
 
 app.use('/api/products', productRouter);
