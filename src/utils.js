@@ -5,7 +5,9 @@ const program = require('./config/programArgs.config.js');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, __dirname + '/public/img');
+        //cb(null, __dirname + '/public/img');
+        console.log(file);
+        cb(null, __dirname + '/documents');
     },
     filename: function(req, file, cb) {
         cb(null, file.originalname);

@@ -83,6 +83,24 @@ class UserController{
             res.status(400).json( {result: 'error', error: error.message} );
         }
     }
+
+    async uploadDocuments(req, res){
+        try {
+            const upload = await userService.uploadDocuments(req.params.uid, req.files);
+            res.json({result: 'success', payload: upload});
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
+
+    async uploadRoleToAdmin(req, res){
+        try {
+            const upload = await userService.uploadRoleToAdmin(req.params.uid);
+            res.json({result: 'success', payload: upload});
+        } catch (error) {
+            res.status(400).json( {result: 'error', error: error.message} );
+        }
+    }
 }
 
 module.exports = new UserController();

@@ -103,6 +103,25 @@ class UserService{
             attachments: []
         });
     }
+
+    async uploadDocuments(uid, documents){
+        const docs = [];
+        documents.forEach(e => {
+            docs.push({name: e.filename, reference: e.destination});
+        });
+        const upload = await userDao.uploadDocuments(uid, docs);
+        if(!upload.modifiedCount) throw new Error("No se pudo actualizar los documentos");
+        return upload;
+    }
+
+    async uploadRoleToAdmin(id){
+        const user = await userDao.getUserById(id);
+        if(user.role === 'admin') throw Error("El usuario ya posee el rol admin");
+        if(!user.documents || user.documents.length < 3) throw Error("No posee los documentos suficientes para ser Administrador. Actualice sus documentos e intentelo nuevamente");
+        const upload = await userDao.uploadRoleToAdmin(id);
+        if(!upload.modifiedCount) throw Error("No se pudo actualizar el rol");
+        return upload;  
+    }
 }
 
 module.exports = new UserService();

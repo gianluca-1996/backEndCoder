@@ -14,6 +14,10 @@ class UserDao{
     async getUserByCartId(cid){ return await userModel.findOne({cart: cid}).lean() };
 
     async updatePassword(email, password){ return await userModel.updateOne({ email: email }, {password: password}) };
+
+    async uploadDocuments(uid, documents){ return await userModel.updateOne({_id: uid}, {$push: {documents: {$each: documents}}}) };
+
+    async uploadRoleToAdmin(id){return await userModel.updateOne({_id: id}, {$set: {role: 'admin'}})};
 }
 
 module.exports = new UserDao();
